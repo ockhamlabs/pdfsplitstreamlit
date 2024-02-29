@@ -7,10 +7,13 @@ import zipfile
 
 def split_pdf_into_pages(pdf_file, output_folder):
     reader = PyPDF2.PdfReader(pdf_file)
+    # Extracting the first 8 characters of the original filename without its extension
+    original_filename_prefix = os.path.splitext(os.path.basename(pdf_file.name))[0][:8]
     for page_num in range(len(reader.pages)):
         writer = PyPDF2.PdfWriter()
         writer.add_page(reader.pages[page_num])
-        output_filename = f"{output_folder}/Page_{page_num+1:03d}.pdf"
+        # Including the original filename prefix in the output filename
+        output_filename = f"{output_folder}/{original_filename_prefix}_Page_{page_num+1:03d}.pdf"
         with open(output_filename, 'wb') as output_file:
             writer.write(output_file)
 
